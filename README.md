@@ -1,21 +1,21 @@
 <p align="center">
-  <img src="https://github.com/angeliferreira/environment-core/blob/master/environment.jpg?raw=true"/>
+  <img src="https://github.com/angeliferreira/environment/blob/master/environment.jpg?raw=true"/>
 </p>
 
-# environment-core [![Build Status](https://travis-ci.org/angeliferreira/environment-core.png?branch=master)](https://travis-ci.org/angeliferreira/environment-core)
+# environment-junit [![Build Status](https://travis-ci.org/angeliferreira/environment-junit.png?branch=master)](https://travis-ci.org/angeliferreira/environment-junit)
 
 Environment is a basic project for running set ups before running each test method in a customized way than using @org.junit.Before and @org.junit.After of JUnit.
 
 
 ## Maven integration
 
-To integrate *Environment Core* to your Maven project, you must declare the following dependency (Not in maven repository yet, must install it local):
+To integrate *Environment JUnit* to your Maven project, you must declare the following dependency (Not in maven repository yet, must install it local):
 
 ```xml
 <dependency>
     <groupId>br.com.lemao</groupId>
-    <artifactId>environment-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>environment-junit</artifactId>
+    <version>1.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -310,6 +310,7 @@ The runner can have their behavior easily customized by overriding the method *g
 
 ## You must also see
 
+* *_[Environment](https://github.com/angeliferreira/environment)_*
 * *_[SimulaTest - Simulatest Test Harness Framework](https://github.com/gabrielsuch/simulatest)_*
 * *_[Fixture Factory](https://github.com/six2six/fixture-factory)_*
 * *_[DbUnit](http://dbunit.sourceforge.net/)_*

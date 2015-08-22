@@ -1,16 +1,12 @@
 package br.com.lemao.environment.junit;
 
-import java.lang.reflect.Method;
-
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import br.com.lemao.environment.Environment;
 import br.com.lemao.environment.annotation.GivenEnvironment;
 import br.com.lemao.environment.annotation.IgnoreEnvironment;
-import br.com.lemao.environment.exception.AfterEnvironmentException;
 import br.com.lemao.environment.exception.EnvironmentException;
-import br.com.lemao.environment.exception.EnvironmentNotImplementedException;
+import br.com.lemao.environment.executor.EnvironmentExecutor;
 
 public class EnvironmentStatement extends Statement {
 
@@ -35,43 +31,9 @@ public class EnvironmentStatement extends Statement {
 	}
 
 	private void runEnvironment(GivenEnvironment givenEnvironment) {
-		Class<? extends Environment> environmentClass = givenEnvironment.value();
-		try {
-			Method environmentMethod = environmentClass.getMethod(givenEnvironment.environmentName());
-
-			GivenEnvironment environmentFather = environmentMethod.getAnnotation(GivenEnvironment.class);
-			if (environmentFather != null) runEnvironment(environmentFather);
-			
-			beforeRun(givenEnvironment);
-			
-			environmentMethod.invoke(getEnvironmentInstance(environmentClass));
-		} catch (NoSuchMethodException e) {
-			throw new EnvironmentNotImplementedException(environmentClass, givenEnvironment.environmentName(), e);
-		} catch (Exception e) {
-			throw new EnvironmentException(environmentClass, givenEnvironment.environmentName(), e);
-		}finally{
-			afterRun(givenEnvironment);
-		}
+		EnvironmentExecutor.gimme().execute(givenEnvironment);
 	}
 	
-	private void beforeRun(GivenEnvironment givenEnvironment) throws Exception{
-		Class<? extends Environment> environmentClass = givenEnvironment.value();
-		environmentClass.newInstance().beforeRun();
-	}
-	
-	private void afterRun(GivenEnvironment givenEnvironment){
-		Class<? extends Environment> environmentClass = givenEnvironment.value();
-		try {
-			environmentClass.newInstance().afterRun();
-		} catch (Exception e) {
-			throw new AfterEnvironmentException(environmentClass, givenEnvironment.environmentName(), e);
-		}
-	}
-
-	private Environment getEnvironmentInstance(Class<? extends Environment> environmentClass) throws InstantiationException, IllegalAccessException {
-		return (Environment) environmentClass.newInstance();
-	}
-
 	private IgnoreEnvironment getIgnoreEnvironmentAnnotation() {
 		return description.getAnnotation(IgnoreEnvironment.class);
 	}
@@ -91,7 +53,7 @@ public class EnvironmentStatement extends Statement {
 			statement.evaluate();
 		} catch (Exception e) {
 			throw new EnvironmentException(getGivenEnvironmentAnnotation().getClass(), getGivenEnvironmentAnnotation().environmentName(), e);
-		}finally{
+		} finally {
 			after();
 		}
 	}

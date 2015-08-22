@@ -3,8 +3,25 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.lemao</groupId>
-	<artifactId>environment-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>environment-junit</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>Environment JUnit</name>
+	<description>Environment JUnit project</description>
+	<url>https://github.com/angeliferreira/environment-junit</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/angeliferreira/environment-junit.git</url>
+	</scm>
 
 	<developers>
 		<developer>
@@ -19,7 +36,18 @@
 		</developer>
 	</developers>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<dependencies>
+
+		<dependency>
+			<groupId>br.com.lemao</groupId>
+			<artifactId>environment</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
