@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/angeliferreira/environment/blob/master/environment.jpg?raw=true"/>
+  <img src="https://github.com/angeliferreira/environment/blob/master/environment-junit.jpg?raw=true"/>
 </p>
 
 # environment-junit [![Build Status](https://travis-ci.org/angeliferreira/environment-junit.png?branch=master)](https://travis-ci.org/angeliferreira/environment-junit)
