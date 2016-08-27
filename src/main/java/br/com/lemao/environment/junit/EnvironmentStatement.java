@@ -52,7 +52,7 @@ public class EnvironmentStatement extends Statement {
 			before();
 			statement.evaluate();
 		} catch (Exception e) {
-			throw new EnvironmentException(getGivenEnvironmentAnnotation().getClass(), getGivenEnvironmentAnnotation().environmentName(), e);
+			throw new EnvironmentException(getGivenEnvironmentAnnotation().value(), getGivenEnvironmentAnnotation().environmentName(), e);
 		} finally {
 			after();
 		}
