@@ -11,11 +11,11 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import br.com.lemao.environment.annotation.GivenEnvironment;
-import br.com.lemao.environment.annotation.IgnoreEnvironment;
 import br.com.lemao.environment.environments.BikerEnvironment;
 import br.com.lemao.environment.environments.OneMaleBikerAndOneBicycleForThisBiker;
 import br.com.lemao.environment.environments.TwoBikersOneMaleAnotherFemaleAndOneBicycleForMaleBiker;
 import br.com.lemao.environment.junit.InMemoryRule;
+import br.com.lemao.environment.junit.annotation.IgnoreEnvironment;
 import br.com.lemao.environment.model.bicycle.Bicycle;
 import br.com.lemao.environment.model.bicycle.support.BicycleInMemorySupport;
 import br.com.lemao.environment.model.biker.Biker;

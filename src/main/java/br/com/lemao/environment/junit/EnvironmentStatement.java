@@ -4,9 +4,9 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import br.com.lemao.environment.annotation.GivenEnvironment;
-import br.com.lemao.environment.annotation.IgnoreEnvironment;
 import br.com.lemao.environment.exception.EnvironmentException;
 import br.com.lemao.environment.executor.EnvironmentExecutor;
+import br.com.lemao.environment.junit.annotation.IgnoreEnvironment;
 
 public class EnvironmentStatement extends Statement {
 
