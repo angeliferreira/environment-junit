@@ -22,7 +22,9 @@ To integrate *Environment JUnit* to your Maven project, you must declare the fol
 
 ## Getting Started
 
-* *_[Basic Structure](https://github.com/angeliferreira/environment#basic-structure)_*
+## Basic Structure
+
+* *_[Basic Structure (Environment Project)](https://github.com/angeliferreira/environment#basic-structure)_*
 
 ### @IgnoreEnvironment annotation
 
