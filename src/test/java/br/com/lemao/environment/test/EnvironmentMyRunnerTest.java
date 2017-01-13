@@ -6,26 +6,19 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.lemao.environment.annotation.GivenEnvironment;
 import br.com.lemao.environment.environments.BikersAndBikesEnvironmentSet;
-import br.com.lemao.environment.junit.EnvironmentRunner;
+import br.com.lemao.environment.junit.InMemoryRunner;
 import br.com.lemao.environment.model.bicycle.Bicycle;
 import br.com.lemao.environment.model.bicycle.support.BicycleInMemorySupport;
 import br.com.lemao.environment.model.biker.support.BikerInMemorySupport;
 
-@RunWith(EnvironmentRunner.class)
-public class EnvironmentRunnerTest {
+@RunWith(InMemoryRunner.class)
+public class EnvironmentMyRunnerTest {
 
-	@After
-	public void after() {
-		BikerInMemorySupport.dropObjects();
-		BicycleInMemorySupport.dropObjects();
-	}
-	
 	@Test
 	@GivenEnvironment(BikersAndBikesEnvironmentSet.TwoBikersWithBicycles.class)
 	public void thereAreTwoNamedBikersWithTwoBikes() {

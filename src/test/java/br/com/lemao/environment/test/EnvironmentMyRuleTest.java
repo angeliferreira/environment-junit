@@ -16,7 +16,7 @@ import br.com.lemao.environment.model.bicycle.Bicycle;
 import br.com.lemao.environment.model.bicycle.support.BicycleInMemorySupport;
 import br.com.lemao.environment.model.biker.support.BikerInMemorySupport;
 
-public class EnvironmentRuleInMemoryTest {
+public class EnvironmentMyRuleTest {
 	
 	@Rule
 	public InMemoryRule inMemoryRule = new InMemoryRule();
