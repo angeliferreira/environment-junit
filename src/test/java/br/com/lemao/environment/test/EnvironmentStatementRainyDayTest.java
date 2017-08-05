@@ -12,6 +12,7 @@ import org.junit.runner.Description;
 
 import br.com.lemao.environment.annotation.GivenEnvironment;
 import br.com.lemao.environment.environments.BikersAndBikesEnvironmentSet;
+import br.com.lemao.environment.exception.EnvironmentException;
 import br.com.lemao.environment.junit.EnvironmentStatement;
 import br.com.lemao.environment.junit.InMemoryRule;
 import br.com.lemao.environment.junit.InMemoryStatement;
@@ -30,9 +31,10 @@ public class EnvironmentStatementRainyDayTest {
 		try {
 			environmentStatement.evaluate();
 			Assert.fail("should throw an EnvironmentException");
-		} catch (Throwable e) {
+		} catch (EnvironmentException e) {
 			assertThat(e.getClass().getSimpleName(), is("EnvironmentException"));
-			assertThat(e.getMessage(), is("Error trying to run environment >> TwoBikersWithBicyclesInMemory.run"));
+		} catch (Throwable e) {
+			Assert.fail("should throw an EnvironmentException");
 		} finally {
 			assertFalse(BikerInMemorySupport.findAll().isEmpty());
 			assertFalse(BicycleInMemorySupport.findAll().isEmpty());
@@ -50,9 +52,10 @@ public class EnvironmentStatementRainyDayTest {
 		try {
 			myStatement.evaluate();
 			Assert.fail("should throw an EnvironmentException");
-		} catch (Throwable e) {
+		} catch (EnvironmentException e) {
 			assertThat(e.getClass().getSimpleName(), is("EnvironmentException"));
-			assertThat(e.getMessage(), is("Error trying to run environment >> TwoBikersWithBicyclesInMemory.run"));
+		} catch (Throwable e) {
+			Assert.fail("should throw an EnvironmentException");
 		}
 		
 		assertTrue(BikerInMemorySupport.findAll().isEmpty());

@@ -1,9 +1,12 @@
 package br.com.lemao.environment.junit;
 
+import java.lang.annotation.Annotation;
+
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import br.com.lemao.environment.annotation.GivenEnvironment;
+import br.com.lemao.environment.annotation.GivenEnvironments;
 import br.com.lemao.environment.exception.EnvironmentException;
 import br.com.lemao.environment.executor.EnvironmentExecutor;
 import br.com.lemao.environment.junit.annotation.IgnoreEnvironment;
@@ -20,30 +23,37 @@ public class EnvironmentStatement extends Statement {
 
 	protected void before() {
 		GivenEnvironment givenEnvironment = getGivenEnvironmentAnnotation();
+		GivenEnvironments givenEnvironments = getAnnotation(GivenEnvironments.class);
 
-		if (givenEnvironment == null || getIgnoreEnvironmentAnnotation() != null) return;
+		if ((givenEnvironment == null && givenEnvironments == null) || getIgnoreEnvironmentAnnotation() != null) return;
 
-		runEnvironment(givenEnvironment);
+		if (givenEnvironment != null && givenEnvironments != null) {
+			throw new EnvironmentException("@GivenEnvironments and @GivenEnvironment annotation in the same class or method !?");
+		} else if (givenEnvironment != null) {
+			EnvironmentExecutor.gimme().execute(givenEnvironment);
+		} else if (givenEnvironments != null) {
+			EnvironmentExecutor.gimme().execute(givenEnvironments);
+		}
 	}
-
+	
 	protected void after() {
 		// Nothing to do here
 	}
-
-	private void runEnvironment(GivenEnvironment givenEnvironment) {
-		EnvironmentExecutor.gimme().execute(givenEnvironment);
-	}
 	
+	private GivenEnvironment getGivenEnvironmentAnnotation() {
+		return getAnnotation(GivenEnvironment.class);
+	}
+
 	private IgnoreEnvironment getIgnoreEnvironmentAnnotation() {
 		return description.getAnnotation(IgnoreEnvironment.class);
 	}
 
-	private GivenEnvironment getGivenEnvironmentAnnotation() {
-		GivenEnvironment givenEnvironmentMethodAnnotation = description.getAnnotation(GivenEnvironment.class);
+	private <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+		T annotation = description.getAnnotation(annotationType);
 
-		if (givenEnvironmentMethodAnnotation != null) return givenEnvironmentMethodAnnotation;
+		if (annotation != null) return annotation;
 
-		return description.getTestClass().getAnnotation(GivenEnvironment.class);
+		return description.getTestClass().getAnnotation(annotationType);
 	}
 
 	@Override
@@ -51,8 +61,10 @@ public class EnvironmentStatement extends Statement {
 		try {
 			before();
 			statement.evaluate();
+		} catch (EnvironmentException e) {
+			throw e;
 		} catch (Exception e) {
-			throw new EnvironmentException(getGivenEnvironmentAnnotation().value(), getGivenEnvironmentAnnotation().environmentName(), e);
+			throw new EnvironmentException(e);
 		} finally {
 			after();
 		}
