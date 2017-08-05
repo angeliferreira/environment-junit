@@ -35,7 +35,7 @@ public class EnvironmentMultipleStatementRainyDayTest {
 			Assert.fail("should throw an EnvironmentException");
 		} catch (Throwable e) {
 			assertThat(e.getClass().getSimpleName(), is("EnvironmentException"));
-			assertThat(e.getMessage(), is("@GivenEnvironments and @GivenEnvironment annotation in the same class ou method !?"));
+			assertThat(e.getMessage(), is("@GivenEnvironments and @GivenEnvironment annotation in the same class or method !?"));
 		} finally {
 			assertTrue(BikerInMemorySupport.findAll().isEmpty());
 			assertTrue(BicycleInMemorySupport.findAll().isEmpty());
@@ -50,7 +50,7 @@ public class EnvironmentMultipleStatementRainyDayTest {
 			Assert.fail("should throw an EnvironmentException");
 		} catch (Throwable e) {
 			assertThat(e.getClass().getSimpleName(), is("EnvironmentException"));
-			assertThat(e.getMessage(), is("@GivenEnvironments and @GivenEnvironment annotation in the same class ou method !?"));
+			assertThat(e.getMessage(), is("@GivenEnvironments and @GivenEnvironment annotation in the same class or method !?"));
 		} finally {
 			assertTrue(BikerInMemorySupport.findAll().isEmpty());
 			assertTrue(BicycleInMemorySupport.findAll().isEmpty());
