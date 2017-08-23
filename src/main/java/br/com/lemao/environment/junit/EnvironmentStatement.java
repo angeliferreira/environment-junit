@@ -9,16 +9,24 @@ import br.com.lemao.environment.annotation.GivenEnvironment;
 import br.com.lemao.environment.annotation.GivenEnvironments;
 import br.com.lemao.environment.exception.EnvironmentException;
 import br.com.lemao.environment.executor.EnvironmentExecutor;
+import br.com.lemao.environment.factory.EnvironmentFactory;
+import br.com.lemao.environment.factory.EnvironmentReflectionFactory;
 import br.com.lemao.environment.junit.annotation.IgnoreEnvironment;
 
 public class EnvironmentStatement extends Statement {
 
 	private Description description;
 	private Statement statement;
+	private EnvironmentFactory environmentFactory;
 
 	public EnvironmentStatement(Statement statement, Description description) {
+		this(statement, description, new EnvironmentReflectionFactory());
+	}
+	
+	public EnvironmentStatement(Statement statement, Description description, EnvironmentFactory environmentFactory) {
 		this.statement = statement;
 		this.description = description;
+		this.environmentFactory = environmentFactory;
 	}
 
 	protected void before() {
@@ -31,9 +39,9 @@ public class EnvironmentStatement extends Statement {
 		    (getAnnotationClass(GivenEnvironment.class) != null && getAnnotationClass(GivenEnvironments.class) != null)) {
 		    throw new EnvironmentException("@GivenEnvironments and @GivenEnvironment annotation in the same class or method !?");
 		} else if (givenEnvironment != null) {
-			EnvironmentExecutor.gimme().execute(givenEnvironment);
+			EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironment);
 		} else if (givenEnvironments != null) {
-			EnvironmentExecutor.gimme().execute(givenEnvironments);
+			EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironments);
 		}
 	}
 
