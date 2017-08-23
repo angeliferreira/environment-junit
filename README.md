@@ -132,6 +132,7 @@ The runner can have their behavior easily customized by overriding the method *g
 ## You must also see
 
 * *_[Environment](https://github.com/angeliferreira/environment)_*
+* *_[Environment Spring](https://github.com/angeliferreira/environment-spring)_*
 * *_[SimulaTest - Simulatest Test Harness Framework](https://github.com/gabrielsuch/simulatest)_*
 * *_[Fixture Factory](https://github.com/six2six/fixture-factory)_*
 * *_[DbUnit](http://dbunit.sourceforge.net/)_*
