@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import br.com.lemao.environment.annotation.GivenEnvironment;
 import br.com.lemao.environment.annotation.GivenEnvironments;
+import br.com.lemao.environment.environments.multiple.OneBikerWithBicycleWithMethodRunAndGivenEnvironmentsEnvironment;
 import br.com.lemao.environment.environments.multiple.OneFemaleBikerWithBicycleEnvironment;
 import br.com.lemao.environment.environments.multiple.OneMaleBikerWithBicycleEnvironment;
 import br.com.lemao.environment.environments.multiple.TwoBicyclesEnvironment;
@@ -87,6 +88,25 @@ public class EnvironmentMultipleEnvironmentsWithClassAnnotationTest {
 	public void twoBikersWithBicyclesCreatedByTestMethodMultipleEnvironmentsWithMethodEnvironmentAndClassEnvironment() {
 		assertTwoBikersWithBicycles();
 	}
+
+	@Test
+    @GivenEnvironment(OneBikerWithBicycleWithMethodRunAndGivenEnvironmentsEnvironment.class)
+    public void oneBikerWithBicycleCreatedByTestMethodMultipleEnvironmentsWithMethodRunAndGivenEnvironments() {
+	    List<Biker> bikers = BikerInMemorySupport.findAll();
+        assertThat(bikers.size(), is(1));
+
+        Biker lemaoBiker = BikerInMemorySupport.findByName("Lemão");
+        assertThat(lemaoBiker.getGender(), is(Gender.MALE));
+        assertThat(lemaoBiker.getName(), is("Lemão"));
+
+        List<Bicycle> bicycles = BicycleInMemorySupport.findAll();
+        assertThat(bicycles.size(), is(1));
+
+        Bicycle bicycleBlue = BicycleInMemorySupport.findByModelName("S-WORKS EPIC 29 - BLACK");
+        assertThat(bicycleBlue.getModelName(), is("S-WORKS EPIC 29 - BLACK"));
+        assertThat(bicycleBlue.getSerialNumber(), is(99999L));
+        assertThat(bicycleBlue.getOwner(), is(lemaoBiker));
+    }
 
 	private void assertTwoBikersWithBicycles() {
 		List<Biker> bikers = BikerInMemorySupport.findAll();
