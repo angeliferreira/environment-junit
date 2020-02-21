@@ -22,7 +22,7 @@ public class EnvironmentStatement extends Statement {
 	public EnvironmentStatement(Statement statement, Description description) {
 		this(statement, description, new EnvironmentReflectionFactory());
 	}
-	
+
 	public EnvironmentStatement(Statement statement, Description description, EnvironmentFactory environmentFactory) {
 		this.statement = statement;
 		this.description = description;
@@ -30,18 +30,28 @@ public class EnvironmentStatement extends Statement {
 	}
 
 	protected void before() {
-		GivenEnvironment givenEnvironment = getGivenEnvironmentAnnotation();
-		GivenEnvironments givenEnvironments = getAnnotation(GivenEnvironments.class);
+		validateGivenEnvironmentAndGivenEnvironmentsInTheSameClassOrMethod();
 
-		if ((givenEnvironment == null && givenEnvironments == null) || getIgnoreEnvironmentAnnotation() != null) return;
+		if ((getGivenEnvironmentAnnotation() == null && getGivenEnvironmentsAnnotation() == null)
+				|| getIgnoreEnvironmentAnnotation() != null)
+			return;
 
-		if ((getAnnotationMethod(GivenEnvironment.class) != null && getAnnotationMethod(GivenEnvironments.class) != null) ||
-		    (getAnnotationClass(GivenEnvironment.class) != null && getAnnotationClass(GivenEnvironments.class) != null)) {
-		    throw new EnvironmentException("@GivenEnvironments and @GivenEnvironment annotation in the same class or method !?");
-		} else if (givenEnvironment != null) {
-			EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironment);
-		} else if (givenEnvironments != null) {
-			EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironments);
+		if (hasAnnotationMethod()) {
+			GivenEnvironment givenEnvironmentMethod = getAnnotationMethod(GivenEnvironment.class);
+			GivenEnvironments givenEnvironmentsMethod = getAnnotationMethod(GivenEnvironments.class);
+			if (givenEnvironmentMethod != null) {
+				EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironmentMethod);
+			} else if (givenEnvironmentsMethod != null) {
+				EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironmentsMethod);
+			}
+		} else {
+			GivenEnvironment givenEnvironmentClass = getAnnotationClass(GivenEnvironment.class);
+			GivenEnvironments givenEnvironmentsClass = getAnnotationClass(GivenEnvironments.class);
+			if (givenEnvironmentClass != null) {
+				EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironmentClass);
+			} else if (givenEnvironmentsClass != null) {
+				EnvironmentExecutor.gimme(environmentFactory).execute(givenEnvironmentsClass);
+			}
 		}
 	}
 
@@ -49,6 +59,21 @@ public class EnvironmentStatement extends Statement {
 		// Nothing to do here
 	}
 
+	private void validateGivenEnvironmentAndGivenEnvironmentsInTheSameClassOrMethod() {
+		if ((getAnnotationMethod(GivenEnvironment.class) != null && getAnnotationMethod(GivenEnvironments.class) != null) ||
+				(getAnnotationClass(GivenEnvironment.class) != null && getAnnotationClass(GivenEnvironments.class) != null)) {
+			throw new EnvironmentException("@GivenEnvironments and @GivenEnvironment annotation in the same class or method !?");
+		}
+	}
+
+	private boolean hasAnnotationMethod() {
+		return getAnnotationMethod(GivenEnvironment.class) != null || getAnnotationMethod(GivenEnvironments.class) != null;
+	}
+	
+	private GivenEnvironments getGivenEnvironmentsAnnotation() {
+		return getAnnotation(GivenEnvironments.class);
+	}
+	
 	private GivenEnvironment getGivenEnvironmentAnnotation() {
 		return getAnnotation(GivenEnvironment.class);
 	}
@@ -60,18 +85,19 @@ public class EnvironmentStatement extends Statement {
 	private <T extends Annotation> T getAnnotation(Class<T> annotationType) {
 		T annotation = getAnnotationMethod(annotationType);
 
-		if (annotation != null) return annotation;
+		if (annotation != null)
+			return annotation;
 
 		return getAnnotationClass(annotationType);
 	}
 
-    private <T extends Annotation> T getAnnotationClass(Class<T> annotationType) {
-        return description.getTestClass().getAnnotation(annotationType);
-    }
+	private <T extends Annotation> T getAnnotationClass(Class<T> annotationType) {
+		return description.getTestClass().getAnnotation(annotationType);
+	}
 
-    private <T extends Annotation> T getAnnotationMethod(Class<T> annotationType) {
-        return description.getAnnotation(annotationType);
-    }
+	private <T extends Annotation> T getAnnotationMethod(Class<T> annotationType) {
+		return description.getAnnotation(annotationType);
+	}
 
 	@Override
 	public void evaluate() throws Throwable {
